@@ -1,33 +1,28 @@
-# Introduction
+# Proyecto de Sistemas Operativos
 
-This is a template to create **ASP.NET Core MVC / Angular** based startup projects for [ASP.NET Boilerplate](https://aspnetboilerplate.com/Pages/Documents). It has 2 different versions:
+## Ejecutar como aplicación web
 
-1. [ASP.NET Core MVC & jQuery](https://aspnetboilerplate.com/Pages/Documents/Zero/Startup-Template-Core) (server rendered multi-page application).
-2. [ASP.NET Core & Angular](https://aspnetboilerplate.com/Pages/Documents/Zero/Startup-Template-Angular) (single page application).
- 
-User Interface is based on [BSB Admin theme](https://github.com/gurayyarar/AdminBSBMaterialDesign).
- 
-# Download
+Instalar PostgreSQL 10, NET Core SDK 2.2 y NodeJS 10.x
 
-Create & download your project from https://aspnetboilerplate.com/Templates
+Dirigirse a la carpeta ProyectoSO.EntityFrameworkCore para ejecutar la migración de base de datos
 
-# Screenshots
+´´´
+    cd ./aspnet-core/ProyectoSO.EntityFrameworkCore
+    dotnet ef database update
+´´´
 
-#### Sample Dashboard Page
-![](_screenshots/module-zero-core-template-ui-home.png)
+Levantar la API del backend
 
-#### User Creation Modal
-![](_screenshots/module-zero-core-template-ui-user-create-modal.png)
+´´´
+    cd ./aspnet-core/ProyectoSO.Web.Host
+    dotnet run
+´´´
 
-#### Login Page
+Levantar front-end
 
-![](_screenshots/module-zero-core-template-ui-login.png)
+´´´
+    cd ./reactjs
+    npm install
+    npm start
+´´´
 
-# Documentation
-
-* [ASP.NET Core MVC & jQuery version.](https://aspnetboilerplate.com/Pages/Documents/Zero/Startup-Template-Core)
-* [ASP.NET Core & Angular  version.](https://aspnetboilerplate.com/Pages/Documents/Zero/Startup-Template-Angular)
-
-# License
-
-[MIT](LICENSE).
