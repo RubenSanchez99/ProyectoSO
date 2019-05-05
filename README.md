@@ -26,3 +26,4 @@ Levantar front-end
     npm start
 ```
 
+Iniciar sesión con usuario "admin" y contraseña "123qwe"
