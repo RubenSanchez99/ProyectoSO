@@ -1,7 +1,7 @@
 import { observable, action } from 'mobx';
 import { GetGruposOutput } from 'src/services/grupo/dto/getGruposOutput';
 import { PagedResultDto } from 'src/services/dto/pagedResultDto';
-import GrupoModel from 'src/models/Grupo/GrupoModel';
+import GrupoModel, { AlumnoInscrito } from 'src/models/Grupo/GrupoModel';
 import grupoService from 'src/services/grupo/grupoService';
 import { GetGrupoInput } from 'src/services/grupo/dto/getGrupoInput';
 import { FinalizarGrupoInput } from 'src/services/grupo/dto/finalizarGrupoInput';
@@ -9,6 +9,7 @@ import { CalificarGrupoInput } from 'src/services/grupo/dto/calificarGrupoInput'
 import { InscribirAlumnoInput } from 'src/services/grupo/dto/inscribirAlumnoInput';
 import { AbrirGrupoInput } from 'src/services/grupo/dto/abrirGrupoInput';
 import materiaService from 'src/services/materia/materiaService';
+import alumnoService from 'src/services/alumno/alumnoService';
 
 var groupBy = function<TItem>(xs: TItem[], key: string): { [key: string]: TItem[] } {
   return xs.reduce(function(rv, x) {
@@ -21,6 +22,7 @@ class GrupoStore {
   @observable grupos: PagedResultDto<GetGruposOutput>;
   @observable grupoModel: GrupoModel = new GrupoModel();
   @observable materias: { [key: string]: GetAllMateriasOutput[] };
+  @observable alumnos: GetAlumnosOutput[];
 
   @action
   nuevoGrupo() {
@@ -51,6 +53,11 @@ class GrupoStore {
     let result = await grupoService.inscribirAlumno(inscribirAlumnoInput);
     this.grupos.items = this.grupos.items.map((x: GetGruposOutput) => {
       if (x.id == inscribirAlumnoInput.grupoId) x = result;
+      return x;
+    });
+
+    this.grupoModel.alumnosInscritos.map((x: AlumnoInscrito) => {
+      if (x.matricula == inscribirAlumnoInput.alumnoMatricula) x = result;
       return x;
     });
   }
@@ -89,6 +96,12 @@ class GrupoStore {
   async getMaterias() {
     let result = await materiaService.getAll();
     this.materias = groupBy(result.items, 'semestre');
+  }
+
+  @action
+  async getAlumnos() {
+    let result = await alumnoService.getAll();
+    this.alumnos = result.items;
   }
 }
 

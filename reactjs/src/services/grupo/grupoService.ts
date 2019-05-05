@@ -35,7 +35,7 @@ class GrupoService {
   }
 
   public async getGrupo(getGrupoInput: GetGrupoInput): Promise<GrupoModel> {
-    let result = await http.get('api/services/app/User/GetGrupo', { params: getGrupoInput });
+    let result = await http.get('api/services/app/Grupo/GetGrupo', { params: getGrupoInput });
     return result.data.result;
   }
 }

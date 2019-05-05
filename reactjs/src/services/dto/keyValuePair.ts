@@ -1,4 +1,3 @@
-export interface KeyValuePair {
-  key: number;
-  value: number;
+export class KeyValuePair {
+  constructor(public key: string, public value: string) {}
 }

@@ -37,6 +37,11 @@ class CreateOrUpdateAlumno extends React.Component<ICreateOrUpdateAlumnoProps> {
     const { getFieldDecorator } = this.props.form;
     const { visible, onCancel, onCreate } = this.props;
 
+    /*const columns = [
+      { title: 'ID', dataIndex: 'id', key: 'id', width: 150, render: (text: string) => <div>{text}</div> },
+      { title: 'Nombre', dataIndex: 'nombre', key: 'nombre', width: 150, render: (text: string) => <div>{text}</div> },
+    ];*/
+
     return (
       <Modal visible={visible} cancelText={'Cancelar'} okText={'Aceptar'} onCancel={onCancel} onOk={onCreate} title={'Alumno'}>
         <Tabs defaultActiveKey={'alumnoInfo'} size={'small'} tabBarGutter={64}>

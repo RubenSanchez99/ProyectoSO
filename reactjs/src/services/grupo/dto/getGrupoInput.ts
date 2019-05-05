@@ -1,3 +1,3 @@
 export interface GetGrupoInput {
-  grupoId: string;
+  id: string;
 }

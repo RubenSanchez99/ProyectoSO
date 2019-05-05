@@ -8,7 +8,7 @@ class GrupoModel {
 
 class Horario {}
 
-class AlumnoInscrito {
+export class AlumnoInscrito {
   matricula: number;
   nombre: string;
   calificacion?: number;
