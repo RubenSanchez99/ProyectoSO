@@ -14,11 +14,13 @@ namespace ProyectoSO.Alumno
     {
         private readonly IRepository<Alumno> _alumnoRepository;
         private readonly IRepository<Materia.Materia> _materiaRepository;
+        private readonly IRepository<Grupo.Grupo> _grupoRepository;
 
-        public AlumnoAppService(IRepository<Alumno> alumnoRepository, IRepository<Materia.Materia> materiaRepository)
+        public AlumnoAppService(IRepository<Alumno> alumnoRepository, IRepository<Materia.Materia> materiaRepository, IRepository<Grupo.Grupo> grupoRepository)
         {
             _alumnoRepository = alumnoRepository;
             _materiaRepository = materiaRepository;
+            _grupoRepository = grupoRepository;
         }
 
         public async Task<GetAlumnosOutput> RegistrarAlumno(AlumnoInput alumno)
@@ -53,7 +55,11 @@ namespace ProyectoSO.Alumno
             foreach (var materiaInscrita in alumno.MateriasInscritas)
             {
                 materiaInscrita.Materia = _materiaRepository.Get(materiaInscrita.MateriaId);
+                materiaInscrita.Grupo = _grupoRepository.Get(materiaInscrita.GrupoId);
+                materiaInscrita.Horario = materiaInscrita.Grupo.Horario.ToString();
             }
+
+            alumno.MateriasInscritas = alumno.MateriasInscritas.OrderBy(x => x.MateriaId).ToList();
 
             return alumno;
         }
@@ -68,7 +74,7 @@ namespace ProyectoSO.Alumno
                     Nombre = String.Join(' ', tAlumno.Nombre, tAlumno.ApellidoPaterno, tAlumno.ApellidoMaterno),
                     MateriasEnCurso = tAlumno.MateriasInscritas.Count(x => x.Calificacion == null)
                 };
-            var getAlumnosOutputs = newResult.ToList();
+            var getAlumnosOutputs = newResult.OrderBy(x => x.Matricula).ToList();
             return new PagedResultDto<GetAlumnosOutput>(
                 getAlumnosOutputs.Count(),
                 getAlumnosOutputs

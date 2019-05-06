@@ -36,6 +36,9 @@ export interface IGruposState {
 @observer
 class Grupos extends AppComponentBase<IGruposProps, IGruposState> {
   formRef: any;
+  createFormRef: any;
+  alumnoAddFormRef: any;
+  calificarFormRef: any;
 
   state = {
     modalVisible: 0,
@@ -72,11 +75,12 @@ class Grupos extends AppComponentBase<IGruposProps, IGruposState> {
     await this.props.grupoStore.getMaterias();
     this.setState({ materias: this.props.grupoStore.materias });
 
-    this.setState;
     this.setState({ grupoId: getGrupoInput.id });
     this.Modal(1);
 
-    this.formRef.props.form.setFieldsValue({ ...this.props.grupoStore.grupoModel });
+    if (getGrupoInput.id != '0') {
+      this.createFormRef.props.form.setFieldsValue({ ...this.props.grupoStore.grupoModel });
+    }
   }
 
   async alumnosGrupoModelOpen(getGrupoInput: GetGrupoInput) {
@@ -93,6 +97,9 @@ class Grupos extends AppComponentBase<IGruposProps, IGruposState> {
   }
 
   async InscribirAlumnoModalOpen(getGrupoInput: GetGrupoInput) {
+    const form = this.alumnoAddFormRef.props.form;
+    form.resetFields();
+
     await this.props.grupoStore.get(getGrupoInput);
     await this.props.grupoStore.getAlumnos();
 
@@ -102,10 +109,13 @@ class Grupos extends AppComponentBase<IGruposProps, IGruposState> {
     this.setState({ grupoId: getGrupoInput.id });
     this.Modal(3);
 
-    //this.formRef.props.form.setFieldsValue({ ...this.props.grupoStore.grupoModel });
+    //this.alumnoAddFormRef.props.form.setFieldsValue({ ...this.props.grupoStore.grupoModel });
   }
 
   async CalificarGrupoModalOpen(getGrupoInput: GetGrupoInput) {
+    const form = this.calificarFormRef.props.form;
+    form.resetFields();
+
     await this.props.grupoStore.get(getGrupoInput);
     this.setState({ alumnosInscritos: this.props.grupoStore.grupoModel.alumnosInscritos });
 
@@ -116,13 +126,14 @@ class Grupos extends AppComponentBase<IGruposProps, IGruposState> {
   }
 
   handleCreate = () => {
-    const form = this.formRef.props.form;
+    const form = this.createFormRef.props.form;
 
     form.validateFields(async (err: any, values: any) => {
       if (err) {
         return;
       } else {
         if (this.state.grupoId == '0') {
+          console.log(values);
           const data: AbrirGrupoInput = {
             materiaId: values.mat,
             capacidad: values.cap,
@@ -149,12 +160,13 @@ class Grupos extends AppComponentBase<IGruposProps, IGruposState> {
   };
 
   handleAlumnoAdd = () => {
-    const form = this.formRef.props.form;
+    const form = this.alumnoAddFormRef.props.form;
 
     form.validateFields(async (err: any, values: any) => {
       if (err) {
         return;
       } else {
+        console.log(values);
         const data: InscribirAlumnoInput = {
           grupoId: this.state.grupoId,
           alumnoMatricula: values.mat,
@@ -170,7 +182,7 @@ class Grupos extends AppComponentBase<IGruposProps, IGruposState> {
   };
 
   handleCalificar = () => {
-    const form = this.formRef.props.form;
+    const form = this.calificarFormRef.props.form;
 
     form.validateFields(async (err: any, values: any) => {
       if (err) {
@@ -195,6 +207,18 @@ class Grupos extends AppComponentBase<IGruposProps, IGruposState> {
     this.formRef = formRef;
   };
 
+  saveCreateFormRef = (formRef: any) => {
+    this.createFormRef = formRef;
+  };
+
+  saveAlumnoAddFormRef = (formRef: any) => {
+    this.alumnoAddFormRef = formRef;
+  };
+
+  saveCalificarFormRef = (formRef: any) => {
+    this.calificarFormRef = formRef;
+  };
+
   public render() {
     const { grupos } = this.props.grupoStore;
     const columns = [
@@ -208,13 +232,13 @@ class Grupos extends AppComponentBase<IGruposProps, IGruposState> {
         width: 220,
         render: (text: string, item: GetGruposOutput) => (
           <div>
-            <Button style={{ marginRight: 5 }} type="primary" icon="setting" onClick={() => this.alumnosGrupoModelOpen({ id: item.id })}>
+            <Button style={{ marginRight: 5 }} type="primary" icon="user" onClick={() => this.alumnosGrupoModelOpen({ id: item.id })}>
               {'Alumnos'}
             </Button>
-            <Button style={{ marginRight: 5 }} type="primary" icon="setting" onClick={() => this.InscribirAlumnoModalOpen({ id: item.id })}>
+            <Button style={{ marginRight: 5 }} type="primary" icon="edit" onClick={() => this.InscribirAlumnoModalOpen({ id: item.id })}>
               {'Inscribir'}
             </Button>
-            <Button type="primary" icon="setting" onClick={() => this.CalificarGrupoModalOpen({ id: item.id })}>
+            <Button type="primary" icon="book" onClick={() => this.CalificarGrupoModalOpen({ id: item.id })}>
               {'Calificar'}
             </Button>
           </div>
@@ -268,7 +292,7 @@ class Grupos extends AppComponentBase<IGruposProps, IGruposState> {
           </Col>
         </Row>
         <CreateGrupo
-          wrappedComponentRef={this.saveFormRef}
+          wrappedComponentRef={this.saveCreateFormRef}
           visible={this.state.modalVisible == 1}
           onCancel={() =>
             this.setState({
@@ -293,7 +317,7 @@ class Grupos extends AppComponentBase<IGruposProps, IGruposState> {
           alumnosInscritos={this.state.alumnosInscritos}
         />
         <InscribirAlumno
-          wrappedComponentRef={this.saveFormRef}
+          wrappedComponentRef={this.saveAlumnoAddFormRef}
           visible={this.state.modalVisible == 3}
           onCancel={() =>
             this.setState({
@@ -305,7 +329,7 @@ class Grupos extends AppComponentBase<IGruposProps, IGruposState> {
           alumnos={this.state.alumnos}
         />
         <CalificarGrupo
-          wrappedComponentRef={this.saveFormRef}
+          wrappedComponentRef={this.saveCalificarFormRef}
           visible={this.state.modalVisible == 4}
           onCancel={() =>
             this.setState({

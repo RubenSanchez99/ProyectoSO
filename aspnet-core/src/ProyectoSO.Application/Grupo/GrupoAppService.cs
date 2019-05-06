@@ -52,6 +52,13 @@ namespace ProyectoSO.Grupo
             {
                 alumno.MateriasInscritas = new List<MateriaInscrita>();
             }
+            
+            foreach (var materiaInscrita in alumno.MateriasInscritas)
+            {
+                materiaInscrita.Materia = _materiaRepository.Get(materiaInscrita.MateriaId);
+                materiaInscrita.Grupo = _grupoRepository.Get(materiaInscrita.GrupoId);
+                materiaInscrita.Horario = materiaInscrita.Grupo.Horario.ToString();
+            }
 
             if (grupo.AlumnosInscritos.Any(x => x.Matricula == alumno.Id))
             {
@@ -67,6 +74,14 @@ namespace ProyectoSO.Grupo
                     x.MateriaId == materia.MateriaRequisitoId && x.Calificacion != null && x.Calificacion >= 70))
             {
                 throw new UserFriendlyException($"El alumno no cumple con el requisito de la materia ({materia.MateriaRequisito.Nombre}).");
+            }
+
+            var empalmadas =
+                alumno.MateriasInscritas.Where(x => x.Calificacion == null && x.Grupo.Horario.Empalma(grupo.Horario)).ToList();
+
+            if (empalmadas.Any())
+            {
+                throw new UserFriendlyException($"El horario de la materia se empalma con otro grupo inscrito ({empalmadas.First().Materia.Nombre}).");
             }
 
             grupo.InscribirAlumno(alumno.Id, string.Join(' ', alumno.Nombre, alumno.ApellidoPaterno, alumno.ApellidoMaterno));
@@ -138,7 +153,7 @@ namespace ProyectoSO.Grupo
                     AlumnosInscritos = tGrupo.AlumnosInscritos.Count
                 };
             
-            var getGruposOutputs = newResult.ToList();
+            var getGruposOutputs = newResult.OrderBy(x => x.Id).ToList();
             return new PagedResultDto<GetGruposOutput>(
                 getGruposOutputs.Count(),
                 getGruposOutputs
@@ -147,7 +162,9 @@ namespace ProyectoSO.Grupo
 
         public async Task<Grupo> GetGrupo(int id)
         {
-            return await _grupoRepository.GetAllIncluding(x => x.Materia, x => x.AlumnosInscritos).SingleAsync(x => x.Id == id);
+            var grupo = await _grupoRepository.GetAllIncluding(x => x.Materia, x => x.AlumnosInscritos).SingleAsync(x => x.Id == id);
+            grupo.AlumnosInscritos = grupo.AlumnosInscritos.OrderBy(x => x.Nombre).ToList();
+            return grupo;
         }
     }
 }

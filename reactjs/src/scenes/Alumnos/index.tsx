@@ -6,17 +6,21 @@ import { EntityDto } from 'src/services/dto/entityDto';
 import * as React from 'react';
 import { Card, Row, Col, Button, Table } from 'antd';
 import CreateOrUpdateAlumno from './components/createOrUpdateAlumno';
+import Horario from './components/horario';
+import Kardex from './components/kardex';
+import AlumnoModel from 'src/models/Alumno/AlumnoModel';
 
 export interface IAlumnosProps {
   alumnoStore: AlumnoStore;
 }
 
 export interface IAlumnosState {
-  modalVisible: boolean;
+  modalVisible: number;
   maxResultCount: number;
   skipCount: number;
   alumnoId: number;
   filter: string;
+  alumno: AlumnoModel;
 }
 
 @inject(Stores.AlumnoStore)
@@ -25,11 +29,12 @@ class Alumnos extends AppComponentBase<IAlumnosProps, IAlumnosState> {
   formRef: any;
 
   state = {
-    modalVisible: false,
+    modalVisible: 0,
     maxResultCount: 10,
     skipCount: 0,
     alumnoId: 0,
     filter: '',
+    alumno: new AlumnoModel(),
   };
 
   async componentDidMount() {
@@ -40,13 +45,15 @@ class Alumnos extends AppComponentBase<IAlumnosProps, IAlumnosState> {
     await this.props.alumnoStore.getAll();
   }
 
-  Modal = () => {
+  Modal = (modalId: number) => {
     this.setState({
-      modalVisible: !this.state.modalVisible,
+      modalVisible: modalId,
     });
   };
 
   async createOrUpdateModalOpen(entityDto: EntityDto) {
+    this.formRef.props.form.resetFields();
+
     if (entityDto.id == 0) {
       await this.props.alumnoStore.createAlumno();
     } else {
@@ -54,9 +61,31 @@ class Alumnos extends AppComponentBase<IAlumnosProps, IAlumnosState> {
     }
 
     this.setState({ alumnoId: entityDto.id });
-    this.Modal();
+    this.Modal(1);
 
-    this.formRef.props.form.setFieldsValue({ ...this.props.alumnoStore.alumnoModel });
+    this.formRef.props.form.setFieldsValue({
+      nombre: this.props.alumnoStore.alumnoModel.nombre,
+      apellidoPaterno: this.props.alumnoStore.alumnoModel.apellidoPaterno,
+      apellidoMaterno: this.props.alumnoStore.alumnoModel.apellidoMaterno,
+    });
+  }
+
+  async horarioModelOpen(entityDto: EntityDto) {
+    await this.props.alumnoStore.get(entityDto);
+
+    this.setState({ alumnoId: entityDto.id });
+    this.setState({ alumno: this.props.alumnoStore.alumnoModel });
+    this.Modal(2);
+
+    //this.formRef.props.form.setFieldsValue({ ...this.props.alumnoStore.alumnoModel });
+  }
+
+  async kardexModalOpen(entityDto: EntityDto) {
+    await this.props.alumnoStore.get(entityDto);
+
+    this.setState({ alumnoId: entityDto.id });
+    this.setState({ alumno: this.props.alumnoStore.alumnoModel });
+    this.Modal(3);
   }
 
   handleCreate = () => {
@@ -74,7 +103,7 @@ class Alumnos extends AppComponentBase<IAlumnosProps, IAlumnosState> {
       }
 
       await this.getAll();
-      this.setState({ modalVisible: false });
+      this.setState({ modalVisible: 0 });
       form.resetFields();
     });
   };
@@ -94,8 +123,19 @@ class Alumnos extends AppComponentBase<IAlumnosProps, IAlumnosState> {
         width: 150,
         render: (text: string, item: GetAlumnosOutput) => (
           <div>
-            <Button type="primary" icon="setting" onClick={() => this.createOrUpdateModalOpen({ id: parseInt(item.matricula) })}>
+            <Button
+              style={{ marginRight: 5 }}
+              type="primary"
+              icon="setting"
+              onClick={() => this.createOrUpdateModalOpen({ id: parseInt(item.matricula) })}
+            >
               {'Editar'}
+            </Button>
+            <Button style={{ marginRight: 5 }} type="primary" icon="calendar" onClick={() => this.horarioModelOpen({ id: parseInt(item.matricula) })}>
+              {'Horario'}
+            </Button>
+            <Button type="primary" icon="book" onClick={() => this.kardexModalOpen({ id: parseInt(item.matricula) })}>
+              {'Kárdex'}
             </Button>
           </div>
         ),
@@ -149,14 +189,34 @@ class Alumnos extends AppComponentBase<IAlumnosProps, IAlumnosState> {
         </Row>
         <CreateOrUpdateAlumno
           wrappedComponentRef={this.saveFormRef}
-          visible={this.state.modalVisible}
+          visible={this.state.modalVisible == 1}
           onCancel={() =>
             this.setState({
-              modalVisible: false,
+              modalVisible: 0,
             })
           }
           modalType={this.state.alumnoId == 0 ? 'edit' : 'create'}
           onCreate={this.handleCreate}
+        />
+        <Horario
+          visible={this.state.modalVisible == 2}
+          onCancel={() =>
+            this.setState({
+              modalVisible: 0,
+            })
+          }
+          modalType={this.state.alumnoId == 0 ? 'edit' : 'create'}
+          materias={this.state.alumno.materiasInscritas != undefined ? this.state.alumno.materiasInscritas.filter(x => x.calificacion == null) : []}
+        />
+        <Kardex
+          visible={this.state.modalVisible == 3}
+          onCancel={() =>
+            this.setState({
+              modalVisible: 0,
+            })
+          }
+          modalType={this.state.alumnoId == 0 ? 'edit' : 'create'}
+          materias={this.state.alumno.materiasInscritas != undefined ? this.state.alumno.materiasInscritas : []}
         />
       </Card>
     );

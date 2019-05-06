@@ -45,21 +45,7 @@ namespace ProyectoSO.EntityFrameworkCore.EntityConfigurations
                 new Materia.Materia { Id = 31, Semestre = 5, Nombre  = "Análisis Numérico", MateriaRequisitoId = 24 },
                 new Materia.Materia { Id = 32, Semestre = 5, Nombre  = "Microprocesadores", MateriaRequisitoId = 25, },
                 new Materia.Materia { Id = 33, Semestre = 5, Nombre  = "Arquitecturas Avanzadas de Computadoras", MateriaRequisitoId = null },
-                new Materia.Materia { Id = 34, Semestre = 5, Nombre  = "Contexto Social de la Profesión", MateriaRequisitoId = null },
-                
-                new Materia.Materia { Id = 35, Semestre = 6, Nombre  = "Sistemas Embebidos I", MateriaRequisitoId = 32 },
-                new Materia.Materia { Id = 36, Semestre = 6, Nombre  = "Estadística II", MateriaRequisitoId = 30 },
-                new Materia.Materia { Id = 37, Semestre = 6, Nombre  = "Sistemas Operativos", MateriaRequisitoId = 32 },
-                new Materia.Materia { Id = 38, Semestre = 6, Nombre  = "Seguridad en Informática", MateriaRequisitoId = null },
-                new Materia.Materia { Id = 39, Semestre = 6, Nombre  = "Competencia Comunicativa en Inglés", MateriaRequisitoId = null },
-                new Materia.Materia { Id = 40, Semestre = 6, Nombre  = "Cultura Regional", MateriaRequisitoId = null },
-                
-                new Materia.Materia { Id = 41, Semestre = 7, Nombre  = "Investigación de Operaciones", MateriaRequisitoId = 36 },
-                new Materia.Materia { Id = 42, Semestre = 7, Nombre  = "Rendimiento de Sistemas", MateriaRequisitoId = 37 },
-                new Materia.Materia { Id = 43, Semestre = 7, Nombre  = "Minería de Datos", MateriaRequisitoId = null },
-                new Materia.Materia { Id = 44, Semestre = 7, Nombre  = "Ética, Sociedad y Profesión", MateriaRequisitoId = null },
-                new Materia.Materia { Id = 45, Semestre = 7, Nombre  = "Metodología Científica", MateriaRequisitoId = null },
-                new Materia.Materia { Id = 46, Semestre = 7, Nombre  = "Formación de Emprendedores", MateriaRequisitoId = null }
+                new Materia.Materia { Id = 34, Semestre = 5, Nombre  = "Contexto Social de la Profesión", MateriaRequisitoId = null }
             );
         }
     }

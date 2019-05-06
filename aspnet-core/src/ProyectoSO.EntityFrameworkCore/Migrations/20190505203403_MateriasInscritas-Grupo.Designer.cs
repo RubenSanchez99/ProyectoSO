@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ProyectoSO.EntityFrameworkCore;
@@ -9,9 +10,10 @@ using ProyectoSO.EntityFrameworkCore;
 namespace ProyectoSO.Migrations
 {
     [DbContext(typeof(ProyectoSODbContext))]
-    partial class ProyectoSODbContextModelSnapshot : ModelSnapshot
+    [Migration("20190505203403_MateriasInscritas-Grupo")]
+    partial class MateriasInscritasGrupo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

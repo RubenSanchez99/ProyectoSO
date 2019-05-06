@@ -18,16 +18,16 @@ export interface IAlumnosGrupoProps extends FormComponentProps {
 class AlumnosGrupo extends React.Component<IAlumnosGrupoProps> {
   render() {
     const columns = [
-      { title: 'Matrícula', dataIndex: 'matricula', key: 'matricula', width: 80, render: (text: string) => <div>{text}</div> },
-      { title: 'Nombre', dataIndex: 'nombre', key: 'nombre', width: 220, render: (text: string) => <div>{text}</div> },
-      { title: 'Calificación', dataIndex: 'calificacion', key: 'calificacion', width: 30, render: (text: string) => <div>{text}</div> },
+      { title: 'Matrícula', dataIndex: 'matricula', key: 'matricula', width: 70, render: (text: string) => <div>{text}</div> },
+      { title: 'Nombre', dataIndex: 'nombre', key: 'nombre', width: 190, render: (text: string) => <div>{text}</div> },
+      { title: 'Calificación', dataIndex: 'calificacion', key: 'calificacion', width: 80, render: (text: string) => <div>{text}</div> },
     ];
 
     const { visible, onCancel } = this.props;
 
     return (
       <Modal visible={visible} cancelText={'Cerrar'} onCancel={onCancel} title={'Lista del Grupo'}>
-        <Row style={{ marginTop: 20 }}>
+        <Row>
           <Col
             xs={{ span: 24, offset: 0 }}
             sm={{ span: 24, offset: 0 }}

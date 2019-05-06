@@ -25,8 +25,8 @@ class PlanEstudios extends AppComponentBase<IPlanEstudiosProps, IPlanEstudiosSta
   public render() {
     const { materias } = this.props.planEstudiosStore;
     const columns = [
-      { title: 'Matricula', dataIndex: 'id', key: 'id', width: 150, render: (text: string) => <div>{text}</div> },
-      { title: 'Nombre', dataIndex: 'nombre', key: 'nombre', width: 150, render: (text: string) => <div>{text}</div> },
+      { title: 'Id', dataIndex: 'id', key: 'id', width: 100, render: (text: string) => <div>{text}</div> },
+      { title: 'Nombre', dataIndex: 'nombre', key: 'nombre', width: 200, render: (text: string) => <div>{text}</div> },
       { title: 'Semestre', dataIndex: 'semestre', key: 'semestre', width: 150, render: (text: string) => <div>{text}</div> },
       { title: 'Requisito', dataIndex: 'materiaRequisito.nombre', key: 'materiaRequisito', width: 150, render: (text: string) => <div>{text}</div> },
     ];
@@ -52,8 +52,7 @@ class PlanEstudios extends AppComponentBase<IPlanEstudiosProps, IPlanEstudiosSta
             lg={{ span: 1, offset: 21 }}
             xl={{ span: 1, offset: 21 }}
             xxl={{ span: 1, offset: 21 }}
-          >
-          </Col>
+          />
         </Row>
         <Row style={{ marginTop: 20 }}>
           <Col
@@ -70,7 +69,7 @@ class PlanEstudios extends AppComponentBase<IPlanEstudiosProps, IPlanEstudiosSta
               bordered={true}
               columns={columns}
               loading={materias == undefined ? true : false}
-              dataSource={materias == undefined ? [] : materias.items}
+              dataSource={materias == undefined ? [] : materias.items.slice().sort((a, b) => parseInt(a.id) - parseInt(b.id))}
             />
           </Col>
         </Row>

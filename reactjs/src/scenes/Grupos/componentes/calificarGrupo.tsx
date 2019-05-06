@@ -42,11 +42,15 @@ class CalificarGrupo extends React.Component<ICalificarGrupo> {
 
     return (
       <Modal visible={visible} cancelText={'Cerrar'} okText={'Inscribir'} onOk={onCalificar} onCancel={onCancel} title={'Calificar Grupo'}>
-        {this.props.alumnosInscritos.map(x => (
-          <FormItem style={{ margin: 20 }} key={x.matricula} {...formItemLayout} label={x.nombre}>
-            {getFieldDecorator(x.matricula.toString())(<InputNumber />)}
-          </FormItem>
-        ))}
+        {this.props.alumnosInscritos.length > 0 ? (
+          this.props.alumnosInscritos.map(x => (
+            <FormItem style={{ margin: 20 }} key={x.matricula} {...formItemLayout} label={x.nombre}>
+              {getFieldDecorator(x.matricula.toString())(<InputNumber />)}
+            </FormItem>
+          ))
+        ) : (
+          <div>No hay alumnos para calificar</div>
+        )}
       </Modal>
     );
   }

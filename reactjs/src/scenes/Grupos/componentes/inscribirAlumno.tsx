@@ -46,7 +46,7 @@ class InscribirAlumno extends React.Component<IInscribirAlumno> {
       <Modal visible={visible} cancelText={'Cerrar'} okText={'Inscribir'} onOk={onAlumnoAdd} onCancel={onCancel} title={'Inscribir alumno a grupo'}>
         <FormItem style={{ margin: 20 }} label={'Alumno'} {...formItemLayout}>
           {getFieldDecorator('mat')(
-            <Select style={{ width: '100%' }} placeholder="Seleccione una alumno">
+            <Select style={{ width: '100%' }} placeholder="Seleccione un alumno">
               {this.props.alumnos.map(x => (
                 <Option key={x.matricula} value={x.matricula}>
                   {x.nombre}

@@ -5,10 +5,12 @@ class AlumnoModel {
   materiasInscritas?: MateriaInscrita[];
 }
 
-class MateriaInscrita {
+export class MateriaInscrita {
   materiaId: number;
   grupoId: number;
   calificacion?: number;
+  materia: GetAllMateriasOutput;
+  horario: string;
 }
 
 export default AlumnoModel;
