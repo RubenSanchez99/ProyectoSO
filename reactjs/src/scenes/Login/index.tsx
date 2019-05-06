@@ -78,7 +78,7 @@ class Login extends React.Component<ILoginProps> {
           <Row>
             <Row style={{ marginTop: 100 }}>
               <Col span={8} offset={8}>
-                <Card>
+                <Card style={{ display: 'none' }}>
                   <Row>
                     {!!this.props.sessionStore!.currentLogin.tenant ? (
                       <Col span={24} offset={0} style={{ textAlign: 'center' }}>
@@ -88,7 +88,7 @@ class Login extends React.Component<ILoginProps> {
                       </Col>
                     ) : (
                       <Col span={24} offset={0} style={{ textAlign: 'center' }}>
-                        <a onClick={loginModel.toggleShowModal}> {L('NotSelected')}</a>
+                        <a onClick={loginModel.toggleShowModal}> {''}</a>
                       </Col>
                     )}
                   </Row>
@@ -124,18 +124,22 @@ class Login extends React.Component<ILoginProps> {
               <Col span={8} offset={8}>
                 <Card>
                   <div style={{ textAlign: 'center' }}>
-                    <h3>{L('WellcomeMessage')}</h3>
+                    <h3>{'Bienvenido'}</h3>
                   </div>
                   <FormItem>
                     {getFieldDecorator('userNameOrEmailAddress', { rules: rules.userNameOrEmailAddress })(
-                      <Input placeholder={L('UserNameOrEmail')} prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} size="large" />
+                      <Input
+                        placeholder={'Nombre de usuario o correo'}
+                        prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                        size="large"
+                      />
                     )}
                   </FormItem>
 
                   <FormItem>
                     {getFieldDecorator('password', { rules: rules.password })(
                       <Input
-                        placeholder={L('Password')}
+                        placeholder={'Contraseña'}
                         prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
                         type="password"
                         size="large"
@@ -145,14 +149,14 @@ class Login extends React.Component<ILoginProps> {
                   <Row style={{ margin: '0px 0px 10px 15px ' }}>
                     <Col span={12} offset={0}>
                       <Checkbox checked={loginModel.rememberMe} onChange={loginModel.toggleRememberMe} />
-                      {L('RememberMe')}
+                      {'Recordarme'}
                       <br />
-                      <a>{L('ForgotPassword')}</a>
+                      <a>{'¿Olvidó su contraseña?'}</a>
                     </Col>
 
                     <Col span={8} offset={4}>
                       <Button style={{ backgroundColor: '#f5222d', color: 'white' }} htmlType={'submit'} type="danger">
-                        {L('LogIn')}
+                        {'Login'}
                       </Button>
                     </Col>
                   </Row>
