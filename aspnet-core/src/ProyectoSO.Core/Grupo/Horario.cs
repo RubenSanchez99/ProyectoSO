@@ -31,11 +31,11 @@ namespace ProyectoSO.Grupo
         public bool Empalma(Horario horario)
         {
             return Hora == horario.Hora &&
-                   Lunes == horario.Lunes ||
-                   Martes == horario.Martes ||
-                   Miercoles == horario.Miercoles ||
-                   Jueves == horario.Jueves ||
-                   Viernes == horario.Viernes;
+                   ((Lunes && horario.Lunes ||
+                     (Martes && horario.Martes) ||
+                     (Miercoles && horario.Miercoles) ||
+                     (Jueves && horario.Jueves) ||
+                     (Viernes && horario.Viernes)));
         }
 
         public override string ToString()
